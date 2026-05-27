@@ -1,6 +1,6 @@
 {
 	"name": "colorez",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Change text color using Obsidian theme colors.",
 	"main": "main.js",
 	"author": "Didac",
