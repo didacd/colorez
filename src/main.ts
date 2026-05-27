@@ -1,31 +1,34 @@
 import { Plugin, Editor, Menu, MenuItem } from 'obsidian';
-import { removeColor, wrapColor, wrapHighlight } from './utils';
+import { removeColor, wrapColor, wrapHighlight, COLORS } from './utils';
+import { ColorModal } from './ColorModal';
 
 interface MenuItemWithSubmenu extends MenuItem {
 	setSubmenu(): Menu;
 }
 
-interface ThemeColor {
-	name: string;
-	varName: string;
-}
-
-const COLORS: ThemeColor[] = [
-	{ name: "Normal", varName: "var(--text-normal)" },
-	{ name: "Muted", varName: "var(--text-muted)" },
-	{ name: "Accent", varName: "var(--text-accent)" },
-	{ name: "Red", varName: "var(--color-red)" },
-	{ name: "Orange", varName: "var(--color-orange)" },
-	{ name: "Yellow", varName: "var(--color-yellow)" },
-	{ name: "Green", varName: "var(--color-green)" },
-	{ name: "Cyan", varName: "var(--color-cyan)" },
-	{ name: "Blue", varName: "var(--color-blue)" },
-	{ name: "Purple", varName: "var(--color-purple)" },
-	{ name: "Pink", varName: "var(--color-pink)" },
-];
-
 export default class ColorezPlugin extends Plugin {
 	async onload() {
+		// Register commands to open the color modals
+		this.addCommand({
+			id: 'change-text-color',
+			name: 'Change text color',
+			editorCallback: (editor: Editor) => {
+				if (editor.somethingSelected()) {
+					new ColorModal(this.app, editor, wrapColor).open();
+				}
+			}
+		});
+
+		this.addCommand({
+			id: 'highlight-text',
+			name: 'Highlight text',
+			editorCallback: (editor: Editor) => {
+				if (editor.somethingSelected()) {
+					new ColorModal(this.app, editor, wrapHighlight).open();
+				}
+			}
+		});
+
 		// Register a command to remove color
 		this.addCommand({
 			id: 'remove-text-color',
