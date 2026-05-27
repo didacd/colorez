@@ -1,20 +1,32 @@
 import { Editor } from "obsidian";
 
-const GLOBAL_SPAN_REGEX = /<span style="color:\s*(var\(--[a-zA-Z0-9-]+\))">([^<]*)<\/span>/g;
-const SPAN_REGEX_TEST = /<span style="color:\s*(var\(--[a-zA-Z0-9-]+\))">([^<]*)<\/span>/;
+const COLOR_SPAN_REGEX_G = /<span style="color:\s*(var\(--[a-zA-Z0-9-]+\))">([^<]*)<\/span>/g;
+const HIGHLIGHT_MARK_REGEX_G = /<mark class="colorez-highlight" style="--hl-color:\s*(var\(--[a-zA-Z0-9-]+\));?">([^<]*)<\/mark>/g;
+
+function unwrapAll(text: string): string {
+	let unwrapped = text;
+	unwrapped = unwrapped.replace(COLOR_SPAN_REGEX_G, "$2");
+	unwrapped = unwrapped.replace(HIGHLIGHT_MARK_REGEX_G, "$2");
+	return unwrapped;
+}
 
 export function wrapColor(editor: Editor, colorVar: string) {
 	if (!editor.somethingSelected()) return;
 
-	let selection = editor.getSelection();
-	
-	// If it's already wrapped, unwrap first so we don't nest
-	if (SPAN_REGEX_TEST.test(selection)) {
-		selection = selection.replace(GLOBAL_SPAN_REGEX, "$2");
-	}
+	const selection = editor.getSelection();
+	const cleanSelection = unwrapAll(selection);
 
-	// Now wrap it with the new color
-	const wrapped = `<span style="color: ${colorVar}">${selection}</span>`;
+	const wrapped = `<span style="color: ${colorVar}">${cleanSelection}</span>`;
+	editor.replaceSelection(wrapped);
+}
+
+export function wrapHighlight(editor: Editor, colorVar: string) {
+	if (!editor.somethingSelected()) return;
+
+	const selection = editor.getSelection();
+	const cleanSelection = unwrapAll(selection);
+
+	const wrapped = `<mark class="colorez-highlight" style="--hl-color: ${colorVar};">${cleanSelection}</mark>`;
 	editor.replaceSelection(wrapped);
 }
 
@@ -22,8 +34,9 @@ export function removeColor(editor: Editor) {
 	if (!editor.somethingSelected()) return;
 
 	const selection = editor.getSelection();
-	if (SPAN_REGEX_TEST.test(selection)) {
-		const unwrapped = selection.replace(GLOBAL_SPAN_REGEX, "$2");
+	const unwrapped = unwrapAll(selection);
+	
+	if (selection !== unwrapped) {
 		editor.replaceSelection(unwrapped);
 	}
 }

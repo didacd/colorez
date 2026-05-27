@@ -1,5 +1,5 @@
 import { Plugin, Editor, Menu, MenuItem } from 'obsidian';
-import { removeColor, wrapColor } from './utils';
+import { removeColor, wrapColor, wrapHighlight } from './utils';
 
 interface MenuItemWithSubmenu extends MenuItem {
 	setSubmenu(): Menu;
@@ -29,7 +29,7 @@ export default class ColorezPlugin extends Plugin {
 		// Register a command to remove color
 		this.addCommand({
 			id: 'remove-text-color',
-			name: 'Remove text color',
+			name: 'Remove text color or highlight',
 			editorCallback: (editor: Editor) => {
 				removeColor(editor);
 			}
@@ -39,44 +39,30 @@ export default class ColorezPlugin extends Plugin {
 		this.registerEvent(
 			this.app.workspace.on('editor-menu', (menu, editor) => {
 				if (editor.somethingSelected()) {
+					// Change color submenu
 					menu.addItem((item) => {
 						item
 							.setTitle('Change color')
 							.setIcon('palette');
 						
-						// Use undocumented setSubmenu API
 						const submenu = (item as unknown as MenuItemWithSubmenu).setSubmenu();
-						
-						COLORS.forEach((color) => {
-							submenu.addItem((subItem) => {
-								const frag = document.createDocumentFragment();
-								
-								const container = document.createElement('div');
-								container.addClass('colorez-submenu-item');
-
-								const circle = document.createElement('div');
-								circle.addClass('colorez-submenu-circle');
-								circle.style.backgroundColor = color.varName;
-
-								const text = document.createElement('span');
-								text.textContent = color.name;
-								
-								container.appendChild(circle);
-								container.appendChild(text);
-								frag.appendChild(container);
-
-								subItem
-									.setTitle(frag)
-									.onClick(() => {
-										wrapColor(editor, color.varName);
-									});
-							});
-						});
+						this.populateColorSubmenu(submenu, editor, wrapColor);
 					});
-					
+
+					// Highlight text submenu
 					menu.addItem((item) => {
 						item
-							.setTitle('Remove color')
+							.setTitle('Highlight text')
+							.setIcon('highlighter');
+						
+						const submenu = (item as unknown as MenuItemWithSubmenu).setSubmenu();
+						this.populateColorSubmenu(submenu, editor, wrapHighlight);
+					});
+					
+					// Remove color
+					menu.addItem((item) => {
+						item
+							.setTitle('Remove color/highlight')
 							.setIcon('eraser')
 							.onClick(() => {
 								removeColor(editor);
@@ -85,6 +71,34 @@ export default class ColorezPlugin extends Plugin {
 				}
 			})
 		);
+	}
+
+	populateColorSubmenu(submenu: Menu, editor: Editor, callback: (editor: Editor, colorVar: string) => void) {
+		COLORS.forEach((color) => {
+			submenu.addItem((subItem) => {
+				const frag = document.createDocumentFragment();
+				
+				const container = document.createElement('div');
+				container.addClass('colorez-submenu-item');
+
+				const circle = document.createElement('div');
+				circle.addClass('colorez-submenu-circle');
+				circle.style.backgroundColor = color.varName;
+
+				const text = document.createElement('span');
+				text.textContent = color.name;
+				
+				container.appendChild(circle);
+				container.appendChild(text);
+				frag.appendChild(container);
+
+				subItem
+					.setTitle(frag)
+					.onClick(() => {
+						callback(editor, color.varName);
+					});
+			});
+		});
 	}
 
 	onunload() {

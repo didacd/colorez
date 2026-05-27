@@ -23,3 +23,10 @@
 	border-radius: 50%;
 	flex-shrink: 0;
 }
+
+.colorez-highlight {
+	background-color: color-mix(in srgb, var(--hl-color) 20%, transparent);
+	color: var(--hl-color);
+	border-radius: 8px;
+	padding: 2px 6px;
+}
