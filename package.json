@@ -1,6 +1,6 @@
 {
 	"name": "colorez",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Change text color using active theme colors.",
 	"main": "main.js",
 	"author": "Didac",
