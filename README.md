@@ -22,8 +22,12 @@ Instead of hardcoding hex values or messing with raw HTML tags, Colorez wraps yo
 
 ## Installation
 
-### From Community Plugins (Coming Soon)
-Once approved in the community directory, you'll be able to install it directly from Obsidian Settings -> Community Plugins.
+### From Community Plugins
+You can install Colorez directly from within Obsidian:
+1. Open Obsidian **Settings** -> **Community plugins**.
+2. Ensure **Restricted mode** is turned off.
+3. Click **Browse** and search for "Colorez".
+4. Click **Install** and then **Enable**.
 
 ### Manual Installation
 1. Download the latest release (`main.js`, `manifest.json`, `styles.css`) from the [Releases](https://github.com/didacd/colorez/releases) page of this repository.
