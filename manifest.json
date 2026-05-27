@@ -3,7 +3,7 @@
 	"name": "Colorez",
 	"version": "1.0.2",
 	"minAppVersion": "0.15.0",
-	"description": "Change text color using Obsidian theme colors.",
+	"description": "Change text color using active theme colors.",
 	"author": "Didac",
 	"authorUrl": "https://github.com/didacd",
 	"fundingUrl": "https://github.com/didacd",

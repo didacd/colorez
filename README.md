@@ -27,7 +27,7 @@ Once approved in the community directory, you'll be able to install it directly 
 
 ### Manual Installation
 1. Download the latest release (`main.js`, `manifest.json`, `styles.css`) from the [Releases](https://github.com/didacd/colorez/releases) page of this repository.
-2. Copy these 3 files into your vault at `<VaultFolder>/.obsidian/plugins/colorez/`.
+2. Copy these 3 files into your vault at `path/to/your/vault/.obsidian/plugins/colorez/`.
 3. Restart Obsidian.
 4. Go to **Settings -> Community plugins** and enable **Colorez**.
 
@@ -42,7 +42,7 @@ This project uses modern tooling, powered by [Bun](https://bun.sh/) and TypeScri
 
 1. Clone this repository into your Obsidian vault's plugin directory:
    ```bash
-   cd VaultFolder/.obsidian/plugins/
+   cd path/to/your/vault/.obsidian/plugins/
    git clone https://github.com/didacd/colorez.git
    cd colorez
    ```
