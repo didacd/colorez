@@ -3,10 +3,10 @@
 	"version": "1.0.1",
 	"description": "Change text color using Obsidian theme colors.",
 	"main": "main.js",
-	"author": "Your Name",
+	"author": "Didac",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/your-username/colorez.git"
+		"url": "https://github.com/didacd/colorez.git"
 	},
 	"type": "module",
 	"scripts": {
@@ -16,7 +16,7 @@
 		"lint": "bun x eslint ."
 	},
 	"keywords": [],
-	"license": "0-BSD",
+	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.6",
 		"esbuild": "0.25.5",
