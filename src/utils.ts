@@ -10,6 +10,25 @@ function unwrapAll(text: string): string {
 	return unwrapped;
 }
 
+export interface ThemeColor {
+	name: string;
+	varName: string;
+}
+
+export const COLORS: ThemeColor[] = [
+	{ name: "Normal", varName: "var(--text-normal)" },
+	{ name: "Muted", varName: "var(--text-muted)" },
+	{ name: "Accent", varName: "var(--text-accent)" },
+	{ name: "Red", varName: "var(--color-red)" },
+	{ name: "Orange", varName: "var(--color-orange)" },
+	{ name: "Yellow", varName: "var(--color-yellow)" },
+	{ name: "Green", varName: "var(--color-green)" },
+	{ name: "Cyan", varName: "var(--color-cyan)" },
+	{ name: "Blue", varName: "var(--color-blue)" },
+	{ name: "Purple", varName: "var(--color-purple)" },
+	{ name: "Pink", varName: "var(--color-pink)" },
+];
+
 export function wrapColor(editor: Editor, colorVar: string) {
 	if (!editor.somethingSelected()) return;
 
