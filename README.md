@@ -6,7 +6,8 @@ Instead of hardcoding hex values or messing with raw HTML tags, Colorez wraps yo
 
 ## Features
 
-- **Native Right-Click Menu:** Select text, right-click, and hover over `Change color` to pick from your theme's palette.
+- **Native Right-Click Menu:** Select text, right-click, and hover over `Change color` or `Highlight text` to pick from your theme's palette.
+- **Highlighting:** Easily highlight text with matching background colors that include transparency and smooth rounded corners.
 - **Color Previews:** See exactly what a color looks like with tiny color circle previews directly in the context menu.
 - **Theme Adapting:** Uses standard Obsidian CSS variables (Red, Blue, Accent, Normal, Muted, etc.) so your text changes seamlessly when switching from dark to light mode or installing new themes.
 - **Easy Removal:** An "Eraser" option lets you quickly remove color styling from previously colored text without leaving nested HTML span tags.
