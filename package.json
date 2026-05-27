@@ -1,14 +1,19 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "colorez",
 	"version": "1.0.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "Change text color using Obsidian theme colors.",
 	"main": "main.js",
+	"author": "Your Name",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/your-username/colorez.git"
+	},
 	"type": "module",
 	"scripts": {
-		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json",
-		"lint": "eslint ."
+		"dev": "bun run esbuild.config.mjs",
+		"build": "bun x tsc -noEmit -skipLibCheck && bun run esbuild.config.mjs production",
+		"version": "bun run version-bump.mjs && git add manifest.json versions.json",
+		"lint": "bun x eslint ."
 	},
 	"keywords": [],
 	"license": "0-BSD",

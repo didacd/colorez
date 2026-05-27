@@ -1,99 +1,93 @@
-import {App, Editor, MarkdownView, Modal, Notice, Plugin} from 'obsidian';
-import {DEFAULT_SETTINGS, MyPluginSettings, SampleSettingTab} from "./settings";
+import { Plugin, Editor, Menu, MenuItem } from 'obsidian';
+import { removeColor, wrapColor } from './utils';
 
-// Remember to rename these classes and interfaces!
+interface MenuItemWithSubmenu extends MenuItem {
+	setSubmenu(): Menu;
+}
 
-export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+interface ThemeColor {
+	name: string;
+	varName: string;
+}
 
+const COLORS: ThemeColor[] = [
+	{ name: "Normal", varName: "var(--text-normal)" },
+	{ name: "Muted", varName: "var(--text-muted)" },
+	{ name: "Accent", varName: "var(--text-accent)" },
+	{ name: "Red", varName: "var(--color-red)" },
+	{ name: "Orange", varName: "var(--color-orange)" },
+	{ name: "Yellow", varName: "var(--color-yellow)" },
+	{ name: "Green", varName: "var(--color-green)" },
+	{ name: "Cyan", varName: "var(--color-cyan)" },
+	{ name: "Blue", varName: "var(--color-blue)" },
+	{ name: "Purple", varName: "var(--color-purple)" },
+	{ name: "Pink", varName: "var(--color-pink)" },
+];
+
+export default class ColorezPlugin extends Plugin {
 	async onload() {
-		await this.loadSettings();
-
-		// This creates an icon in the left ribbon.
-		this.addRibbonIcon('dice', 'Sample', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
-		});
-
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status bar text');
-
-		// This adds a simple command that can be triggered anywhere
+		// Register a command to remove color
 		this.addCommand({
-			id: 'open-modal-simple',
-			name: 'Open modal (simple)',
-			callback: () => {
-				new SampleModal(this.app).open();
+			id: 'remove-text-color',
+			name: 'Remove text color',
+			editorCallback: (editor: Editor) => {
+				removeColor(editor);
 			}
 		});
-		// This adds an editor command that can perform some operation on the current editor instance
-		this.addCommand({
-			id: 'replace-selected',
-			name: 'Replace selected content',
-			editorCallback: (editor: Editor, view: MarkdownView) => {
-				editor.replaceSelection('Sample editor command');
-			}
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-modal-complex',
-			name: 'Open modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
 
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
+		// Add items to the right-click editor context menu
+		this.registerEvent(
+			this.app.workspace.on('editor-menu', (menu, editor) => {
+				if (editor.somethingSelected()) {
+					menu.addItem((item) => {
+						item
+							.setTitle('Change color')
+							.setIcon('palette');
+						
+						// Use undocumented setSubmenu API
+						const submenu = (item as unknown as MenuItemWithSubmenu).setSubmenu();
+						
+						COLORS.forEach((color) => {
+							submenu.addItem((subItem) => {
+								const frag = document.createDocumentFragment();
+								
+								const container = document.createElement('div');
+								container.addClass('colorez-submenu-item');
+
+								const circle = document.createElement('div');
+								circle.addClass('colorez-submenu-circle');
+								circle.style.backgroundColor = color.varName;
+
+								const text = document.createElement('span');
+								text.textContent = color.name;
+								
+								container.appendChild(circle);
+								container.appendChild(text);
+								frag.appendChild(container);
+
+								subItem
+									.setTitle(frag)
+									.onClick(() => {
+										wrapColor(editor, color.varName);
+									});
+							});
+						});
+					});
+					
+					menu.addItem((item) => {
+						item
+							.setTitle('Remove color')
+							.setIcon('eraser')
+							.onClick(() => {
+								removeColor(editor);
+							});
+					});
 				}
-				return false;
-			}
-		});
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
-
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			new Notice("Click");
-		});
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
-
+			})
+		);
 	}
 
 	onunload() {
-	}
-
-	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData() as Partial<MyPluginSettings>);
-	}
-
-	async saveSettings() {
-		await this.saveData(this.settings);
-	}
-}
-
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
-
-	onOpen() {
-		let {contentEl} = this;
-		contentEl.setText('Woah!');
-	}
-
-	onClose() {
-		const {contentEl} = this;
-		contentEl.empty();
+		// Cleanup if needed
 	}
 }

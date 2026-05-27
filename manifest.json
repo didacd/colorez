@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "colorez",
+	"name": "Colorez",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Change text color using Obsidian theme colors.",
+	"author": "Didac",
+	"authorUrl": "https://github.com/didacd",
+	"fundingUrl": "https://github.com/didacd",
 	"isDesktopOnly": false
 }
