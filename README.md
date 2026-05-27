@@ -27,7 +27,7 @@ Once approved in the community directory, you'll be able to install it directly 
 
 ### Manual Installation
 1. Download the latest release (`main.js`, `manifest.json`, `styles.css`) from the [Releases](https://github.com/didacd/colorez/releases) page of this repository.
-2. Copy these 3 files into your vault at `path/to/your/vault/.obsidian/plugins/colorez/`.
+2. Copy these 3 files into your vault under `.obsidian/plugins/colorez/`.
 3. Restart Obsidian.
 4. Go to **Settings -> Community plugins** and enable **Colorez**.
 
@@ -42,7 +42,7 @@ This project uses modern tooling, powered by [Bun](https://bun.sh/) and TypeScri
 
 1. Clone this repository into your Obsidian vault's plugin directory:
    ```bash
-   cd path/to/your/vault/.obsidian/plugins/
+   cd .obsidian/plugins/
    git clone https://github.com/didacd/colorez.git
    cd colorez
    ```
@@ -73,10 +73,10 @@ bun run lint
 Contributions are welcome! If you want to add new features (such as supporting background colors) or fix a bug:
 
 1. Fork this repository.
-2. Create a new branch (`git checkout -b feature/my-cool-feature`).
+2. Create a new branch.
 3. Make your changes and ensure they pass linting (`bun run lint`).
-4. Commit your changes (`git commit -m "feat: added a cool feature"`).
-5. Push to the branch (`git push origin feature/my-cool-feature`).
+4. Commit your changes.
+5. Push to the branch.
 6. Open a Pull Request on GitHub.
 
 ## Releasing (For Maintainers)
@@ -85,13 +85,13 @@ The release process is automated via GitHub Actions.
 
 1. Run the version bump script:
    ```bash
-   bun run version 1.0.1
+   bun run version 1.0.3
    ```
    *This updates `manifest.json` and `versions.json`, and stages them.*
 2. Commit the changes and tag the release:
    ```bash
-   git commit -m "bump version to 1.0.1"
-   git tag 1.0.1
+   git commit -m "bump version"
+   git tag 1.0.3
    ```
 3. Push to trigger the release workflow:
    ```bash
